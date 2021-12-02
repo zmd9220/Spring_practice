@@ -10,13 +10,21 @@ import hello.core.member.MemoryMemberRepository;
 public class OrderServiceImpl implements OrderService{
 
     // 메모리 멤버 리토지토리
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
+//    private final MemberRepository memberRepository = new MemoryMemberRepository();
     // 정액 할인 정책
 //    private final DiscountPolicy discountPolicy = new FixDiscountPolicy();
     // 정률 할인 정책
 //    private final DiscountPolicy discountPolicy = new RateDiscountPolicy();
-    // 인터페이스만 의존하도록 변경
-    private DiscountPolicy discountPolicy;
+    // 인터페이스만 의존하도록 변경 -> NPE 발생
+//    private DiscountPolicy discountPolicy;
+    // AppConfig를 통해 생성자 주입 -> DIP를 지키게 됨
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy;
+
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {

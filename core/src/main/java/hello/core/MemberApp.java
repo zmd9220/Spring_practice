@@ -8,8 +8,12 @@ import hello.core.member.MemberServiceImpl;
 public class MemberApp {
     // 순수한 자바코드로 만든 자바 메서드 실행 (스프링 관련 X)
     public static void main(String[] args) {
-        MemberService memberService = new MemberServiceImpl();
-        // Long 형태이므로 1L이라고 적어야함
+//        MemberService memberService = new MemberServiceImpl();
+        // AppConfig 를 통해 의존관계 주입(관심사 분리)
+        AppConfig appConfig = new AppConfig();
+        MemberService memberService = appConfig.memberService();
+
+        // Long 형태이므로 1L 이라고 적어야함
         Member member = new Member(1L, "memberA", Grade.VIP);
         memberService.join(member);
 
